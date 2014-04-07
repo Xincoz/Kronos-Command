@@ -1,0 +1,42 @@
+
+class Connection:
+  Kon = ""
+  SSLx = ""
+  def Close(self):
+    try:
+      self.Kon.close()
+      return True
+    except:
+      return False
+  
+  def Send(self,Message):
+    try:
+      self.Kon.write(Message)
+      return True
+    except Exception,e:
+      print e
+      return False
+
+
+  def Recieve(self):
+    try:
+      Response = self.Kon.recv(10240)
+      return Response
+    except:
+      return False
+
+#Conenct Function Makes a SSL connection with the node
+  def Connect(self,Link):
+    self.SSLx = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    Ip = Link[0].replace("'",'')
+    print Ip
+    Port = int(Link[1])
+    try:
+      self.SSLx.connect((Ip,Port))
+      return True
+    except Exception,e:
+      print "Connection Attempt Failed"
+      self.Kon = socket.ssl(SSLx)
+      return False
+  
+

@@ -1,6 +1,14 @@
 import os
 import sys
 import Parser
+import Engines
+
+
+LINKS = {
+    'ADDNODE':Engines.AddNode
+    }
+
+
 
 def Helper():
   print "==Help=="
@@ -24,8 +32,11 @@ class Console:
                 Helper()
               else:
                 State,Command = Parser.Parse(Command)
-
-
+                print State,Command
+                try:
+                  LINKS[State](Command)
+                except:
+                  continue 
 
 
 if __name__ == '__main__':
