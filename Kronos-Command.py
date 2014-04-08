@@ -12,9 +12,9 @@ LINKS = {
 
 def Helper():
   print "==Help=="
-  print "Commands | Use | Format - If parameters marked * are optional."
-  print "help     | Print this help message "
-  print "addnode  | Add new node to databse  | 'addnode <IP / Domain> <Node Secret>"
+  print "Commands | Use | Format - Parameters marked * are optional."
+  print "help     | Print this help message | 'help'"
+  print "addnode  | Add new node to databse  | 'addnode <IP / Domain> <Node Secret>'"
   
 
 class Console:

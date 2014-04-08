@@ -9,13 +9,15 @@ class Nodes:
     if not os.path.isfile('Nodes.Kronos'):
         return {}
     else:
-        Nodelist = {}
-        NodeFile = open('Nodes.Kronos','r')
-        for line in NodeFile:
-            line = line.split('|')
-            Nodes = Nodelist + {line[0]:Nodes[1]}
-        NodeFile.close()
-        return Nodelist
+         Nodelist = {}
+         NodeFile = open('Nodes.Kronos','r')
+         for line in NodeFile:
+             line = line.split('|')
+             line[1] = line[1].replace('\n','')
+             Nodelist.update({line[0]:line[1]})
+         print Nodelist
+         NodeFile.close()
+         return Nodelist
 
   def NodeAdd(self,Remote):
     try:
@@ -23,7 +25,7 @@ class Nodes:
     except:
       print "Could not open nodes file"
       return False
-    NodesFile.write(Recieve[0]+'|'+Recieve[1])
+    NodesFile.write(str(Remote[0]+'|'+Remote[1]+'\n'))
     NodesFile.close()
     print "Added"
     return True
