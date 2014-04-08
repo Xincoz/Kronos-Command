@@ -9,6 +9,17 @@ class ParseEngines:
          print "Malformed Command - Contains Special Characters other than (.)"
 
      return "ADDNODE",Command
+      
+    def IfUp(self,IPs=False):
+      if IPs == False:
+          return "IFUP","NULL"
+      Hosts = ""
+      for each in IPs:
+          Hosts = Hosts + each
+      Hosts = Hosts.split(',')
+      return "IFUP",Hosts 
+
+
 
      
 
@@ -30,15 +41,19 @@ def Parse(Command):
   
 
   LINKS={
-    'addnode':ParseEngines().AddNode}
+    'addnode':ParseEngines().AddNode,
+    'ifup':ParseEngines().IfUp}
   
   
   if len(Command) == 0:
       return False,0
   else:
       Command = Format().FormatThis(Command)
-      try:
-        return LINKS[Command[0]](Command[1:])
+      try: 
+       if len(Command) > 1:
+         return LINKS[Command[0]](Command[1:])
+       else:
+         return LINKS[Command[0]]()
       except Exception,e:
         print e
         print "Unknown Command"
