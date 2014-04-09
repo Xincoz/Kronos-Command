@@ -6,7 +6,9 @@ import Engines
 
 LINKS = {
     'ADDNODE':Engines.AddNode,
-    'IFUP':Engines.IfUp
+    'IFUP':Engines.IfUp,
+    'LSPROC':Engines.LsProc,
+    'KILL':Engines.Kill
     }
 
 
@@ -17,7 +19,9 @@ def Helper():
   print "----------------------------------------------------------"
   print "help     | Print this help message | 'help'"
   print "addnode  | Add new node to databse  | 'addnode <IP / Domain> <Node Secret>'"
-  print "ifup     | Check if node/nodes are up by ping | 'ifup  *<IP/Domain/Coma separated Domain or IP List>"
+  print "ifup     | Check if node/nodes are up by ping | 'ifup  *<IP/Domain/Coma separated Domain or IP List>'"
+  print "lsproc   | List Name and PID of all processes running  | 'lsproc *<Coma separater IP/Domain list>'"
+  print "kill     | Kill a process by it's PID on a given host  | 'kill <PID> <IP/Domain of host>'"
   
 
 class Console:

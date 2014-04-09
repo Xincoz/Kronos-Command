@@ -19,9 +19,26 @@ class ParseEngines:
       Hosts = Hosts.split(',')
       return "IFUP",Hosts 
 
+    def LsProc(self,IPs=False):
+      if IPs == False:
+          return  "LSPROC","NULL"
+      Hosts = ""
+      for each in IPs:
+          Hosts = Hosts + each
+      Hosts = Hosts.split(',')
+      return "LSPROC",Hosts
 
+    def Kill(self,Command=False):
+      if Command == False:
+          print "Malformed Command - Ecpecting : kill <PID> <IP/Doman>"
+          return False,0
+      else:
+          if len(Command) != 2:
+              print "Malformed Command - Expecting : kill <PID> <IP/Domain>"
+              return False,0
+          else:
+              return 'KILL',Command
 
-     
 
 
 
@@ -42,7 +59,9 @@ def Parse(Command):
 
   LINKS={
     'addnode':ParseEngines().AddNode,
-    'ifup':ParseEngines().IfUp}
+    'ifup':ParseEngines().IfUp,
+    'lsproc':ParseEngines().LsProc,
+    'kill':ParseEngines().Kill}
   
   
   if len(Command) == 0:

@@ -40,9 +40,9 @@ class Connection:
   SSLx = ""
   def Close(self):
     try:
-      self.Kon.close()
+      self.SSLx.close()
       return True
-    except:
+    except :
       return False
   
   def Send(self,Message):
@@ -85,7 +85,10 @@ class Network:
     except:
       return False
 
-  def Ping(self,Remote):
+
+
+
+  def Ping(self,Remote,AMODE = False):
         if not self.IsIP(Remote[0]):
             try:
               Ip = repr(socket.gethostbyname(Remote[0]))
@@ -108,11 +111,14 @@ class Network:
               + "    PING:" + Fore.RED + "Failed"  + Fore.RESET)
             return False
         if Response == 'BAD SECRET':
-            print Response
+            print "REMOTE HOST : " + Response
             return False
-        print str("REMOTE HOST: " + Fore.GREEN  + Remote[0] + Fore.RESET  +"     STATUS: " + Fore.GREEN + "Up" + Fore.RESET  
-          + "    PING RESPONSE: " + Fore.GREEN + Response + Fore.RESET)
-        return True
+        if AMODE is False:
+          print str("REMOTE HOST: " + Fore.GREEN  + Remote[0] + Fore.RESET  +"     STATUS: " + Fore.GREEN + "Up" + Fore.RESET  
+            + "    PING RESPONSE: " + Fore.GREEN + Response + Fore.RESET)
+          return True
+        else:
+            return Kon
         
     
 
