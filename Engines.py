@@ -97,8 +97,64 @@ def Kill(Commands):
         print "REMOTE HOST: " + Commands[1] + Fore.RED + " Failed" + Fore.RESET
         return False
 
+def KillAll(Commands):
+  Nodes = Tools.Nodes().GetList()
+  Net = Tools.Network()
+  if len(Commands)== 1:
+      print "Killing " + Commands[0] + " in " + str(len(Nodes)) + " nodes."
+      for each in Nodes:
+          Kon = Net.Ping((each,Nodes[each]),True)
+          if Kon == False:
+              continue
+          if not Kon.Send(Nodes[each] + " KILLPS " + Commands[0]):
+            print "REMOTE HOST: " + each + Fore.RED + " - Failed" + Fore.RESET
+            continue
+          Response = Kon.Recieve()
+          Kon.Close()
+          del Kon
+          if Response == "BAD COMMAND":
+            print "REMOTE HOST: " + Commands[1] + Fore.RED + " - BAD COMMAND" + Fore.RESET
+            continue
+          if Response == "BAD SECRET":
+            print "REMOTE HOST: " + Commands[1] + Fore.RED + " - BAD COMMAND" + Fore.RESET
+            continue
+          if Response == 'Killed':
+              Color = Fore.GREEN
+          else:
+              Color = Fore.RED
 
-  
+          print "REMOTE HOST: " + each + " " + Color + Response + Fore.RESET
+      return True
+  else:
+      List = Commands[1].split(',')
+      print "Killing " + Commands[0] + " in " + str(len(List)) + " nodes."
+      for each in List:
+          if each not in Nodes:
+              print "REMOTE HOST: " + each + Fore.RED + " - no such node" + Fore.RESET 
+              continue
+          else:
+              Kon = Net.Ping((each,Nodes[each]),True)
+
+          if Kon == False:
+              continue
+          if not Kon.Send(Nodes[each] + " KILLPS " + Commands[0]):
+            print "REMOTE HOST: " + each + Fore.RED + " - Failed" + Fore.RESET
+            continue
+          Response = Kon.Recieve()
+          Kon.Close()
+          del Kon
+          if Response == "BAD COMMAND":
+            print "REMOTE HOST: " + Commands[1] + Fore.RED + " - BAD COMMAND" + Fore.RESET
+            continue
+          if Response == "BAD SECRET":
+            print "REMOTE HOST: " + Commands[1] + Fore.RED + " - BAD COMMAND" + Fore.RESET
+            continue
+          if Response == 'Killed':
+              Color = Fore.GREEN
+          else:
+              Color = Fore.RED
+          print "REMOTE HOST: " + each + " " + Color + Response + Fore.RESET
+      return True
 
 
 

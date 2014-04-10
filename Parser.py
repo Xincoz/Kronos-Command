@@ -1,6 +1,14 @@
 
 
 class ParseEngines:
+
+    def KillAll(self,Command="NULL"):
+      if len(Command)>2 or Command == "NULL":
+          print "Malformed Command - Expecting : killass <Process Name> <Coma separated IP/Domain list>"
+          return False,0
+      else:
+          return "KILLALL",Command
+
     def AddNode(self,Command):
      if len(Command) != 2:
          print "Malformed Command - Expecting  : addnode <IP / Domain> <Node Secret>"
@@ -61,7 +69,8 @@ def Parse(Command):
     'addnode':ParseEngines().AddNode,
     'ifup':ParseEngines().IfUp,
     'lsproc':ParseEngines().LsProc,
-    'kill':ParseEngines().Kill}
+    'kill':ParseEngines().Kill,
+    'killall':ParseEngines().KillAll}
   
   
   if len(Command) == 0:

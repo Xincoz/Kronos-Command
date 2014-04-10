@@ -8,7 +8,8 @@ LINKS = {
     'ADDNODE':Engines.AddNode,
     'IFUP':Engines.IfUp,
     'LSPROC':Engines.LsProc,
-    'KILL':Engines.Kill
+    'KILL':Engines.Kill,
+    'KILLALL':Engines.KillAll
     }
 
 
@@ -22,6 +23,7 @@ def Helper():
   print "ifup     | Check if node/nodes are up by ping | 'ifup  *<IP/Domain/Coma separated Domain or IP List>'"
   print "lsproc   | List Name and PID of all processes running  | 'lsproc *<Coma separater IP/Domain list>'"
   print "kill     | Kill a process by it's PID on a given host  | 'kill <PID> <IP/Domain of host>'"
+  print "killall  | Kill all processes by name on  nodes        | 'killall <Process Name> *<Coma separated IP/Domain>'"
   
 
 class Console:
