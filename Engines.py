@@ -5,6 +5,87 @@ from colorama import Fore, Back, Style
 import time
 
 
+def ReBoot(Hosts):
+ Nodes = Tools.Nodes().GetList()
+ Net = Tools.Network()
+ if Hosts == 'NULL':
+     print "Reebooting " + str(len(Nodes)) + " nodes." 
+     for each in Nodes:
+          Kon = Net.Ping((each,Nodes[each]),True)
+          if Kon != False:
+              if not Kon.Send(Nodes[each] + " REBOOT"):
+                  print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
+                  continue
+              Response = Kon.Recieve()
+              Kon.Close()
+              del Kon
+              if Response == "BAD COMMAND":
+                  print "REMOTE HOST: " + each + Fore.RED + " - BAD COMMAND" + Fore.RESET
+                  continue
+              print "REMOTE HOST: " + each + " " + Fore.GREEN + Response + Fore.RESET
+ else:
+     Hosts = Hosts[0].split(',')
+     for each in Hosts:
+         if each in Nodes:
+          Kon = Net.Ping((each,Nodes[each]),True)
+          if Kon != False:
+              if not Kon.Send(Nodes[each] + " REBOOT"):
+                  print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
+                  continue
+              Response = Kon.Recieve()
+              Kon.Close()
+              del Kon
+              if Response == "BAD COMMAND":
+                  print "REMOTE HOST: " + each + Fore.RED + " - BAD COMMAND" + Fore.RESET
+                  continue
+              print "REMOTE HOST: " + each + " " + Fore.GREEN + Response + Fore.RESET
+         else:
+          print "REMOTE HOST: " + each + Fore.RED + " - No such node" + Fore.RESET 
+
+
+
+
+def PowerOff(Hosts):
+ Nodes = Tools.Nodes().GetList()
+ Net = Tools.Network()
+ if Hosts == 'NULL':
+     print "Reebooting " + str(len(Nodes)) + " nodes." 
+     for each in Nodes:
+          Kon = Net.Ping((each,Nodes[each]),True)
+          if Kon != False:
+              if not Kon.Send(Nodes[each] + " PWROFF"):
+                  print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
+                  continue
+              Response = Kon.Recieve()
+              Kon.Close()
+              del Kon
+              if Response == "BAD COMMAND":
+                  print "REMOTE HOST: " + each + Fore.RED + " - BAD COMMAND" + Fore.RESET
+                  continue
+              print "REMOTE HOST: " + each + " " + Fore.GREEN + Response + Fore.RESET
+ else:
+     Hosts = Hosts[0].split(',')
+     for each in Hosts:
+         if each in Nodes:
+          Kon = Net.Ping((each,Nodes[each]),True)
+          if Kon != False:
+              if not Kon.Send(Nodes[each] + " PWROFF"):
+                  print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
+                  continue
+              Response = Kon.Recieve()
+              Kon.Close()
+              del Kon
+              if Response == "BAD COMMAND":
+                  print "REMOTE HOST: " + each + Fore.RED + " - BAD COMMAND" + Fore.RESET
+                  continue
+              print "REMOTE HOST: " + each + " " + Fore.GREEN + Response + Fore.RESET
+         else:
+          print "REMOTE HOST: " + each + Fore.RED + " - No such node" + Fore.RESET 
+
+
+
+
+
 
 def AddNode(Key):
   Key = (Key[0].replace("'",''),Key[1])

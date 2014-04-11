@@ -3,29 +3,38 @@ import sys
 import Parser
 import Engines
 
+from colorama import init
+init()
+from colorama import Fore
 
 LINKS = {
     'ADDNODE':Engines.AddNode,
     'IFUP':Engines.IfUp,
     'LSPROC':Engines.LsProc,
     'KILL':Engines.Kill,
-    'KILLALL':Engines.KillAll
-    }
+    'KILLALL':Engines.KillAll,
+    'REBOOT':Engines.ReBoot,
+    'PWROFF':Engines.PowerOff}
 
 
 
 def Helper():
   print "==Help=="
-  print "Commands | Use | Format - Parameters marked * are optional."
-  print "----------------------------------------------------------"
-  print "help     | Print this help message | 'help'"
-  print "addnode  | Add new node to databse  | 'addnode <IP / Domain> <Node Secret>'"
-  print "ifup     | Check if node/nodes are up by ping | 'ifup  *<IP/Domain/Coma separated Domain or IP List>'"
+  print "Commands | Use                                         | Format "  
+  print "-----------------------------------------------------------------------------------------------------------------"
+  print "help     | Print this help message                     | 'help'"
+  print "addnode  | Add new node to databse                     | 'addnode <IP / Domain> <Node Secret>'"
+  print "ifup     | Check if node/nodes are up by ping          | 'ifup  *<IP/Domain/Coma separated Domain or IP List>'"
   print "lsproc   | List Name and PID of all processes running  | 'lsproc *<Coma separater IP/Domain list>'"
   print "kill     | Kill a process by it's PID on a given host  | 'kill <PID> <IP/Domain of host>'"
   print "killall  | Kill all processes by name on  nodes        | 'killall <Process Name> *<Coma separated IP/Domain>'"
+  print "reboot   | Reboot all or few of the nodes              | 'reboot  *<Coma separated IP/Domain list>'  (add --yes to avoid prompt)"
+  print "poweroff | Shutdown all or few of the nodes            | 'poweroff *<Coma separated IP/Domain list>' (add --yes to avoid prompt)"
   
-
+  print "exit     | Exit from console                           | 'exit'"
+  print Fore.GREEN + "Note: Parameters marked * are optional" + Fore.RESET
+  print Fore.RED + "Warning! 'poweroff' command do not have a reverse option available, you will need to start the nodes back manually" + Fore.RESET
+  print "\n"
 class Console:
         
     def Start(self):

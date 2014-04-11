@@ -47,6 +47,56 @@ class ParseEngines:
           else:
               return 'KILL',Command
 
+    def Reboot(self,Command=False):
+      if Command == False:
+          print "Are you sure you want to reboot the entire cluster (yes/no)) :",
+          if raw_input() == 'yes':
+              return 'REBOOT',"NULL"
+          else:
+              return False,0
+      else:
+          if len(Command) > 2:
+            print "Malformed Command - Expecting : reboot *--yes <Coma separated IP/Domain list>"
+            return False,0
+          if '--yes' not in Command:
+            print "Are you sure you want to reboot the entire cluster (yes/no)) :",
+            if raw_input() == 'yes':
+                return 'REBOOT',Command
+            else:
+                return False,0
+          else:
+              if len(Command)!=1:
+                Command.remove('--yes')
+                return 'REBOOT',Command
+              else:
+                  return 'REBOOT','NULL'
+
+
+
+    def PowerOff(self,Command=False):
+      if Command == False:
+          print "Are you sure you want to shutdown the entire cluster (yes/no) :",
+          if raw_input() == 'yes':
+              return 'PWROFF',"NULL"
+          else:
+              return False,0
+      else:
+          if len(Command) > 2:
+            print "Malformed Command - Expecting : reboot *--yes <Coma separated IP/Domain list>"
+            return False,0
+          if '--yes' not in Command:
+            print "Are you sure you want to reboot the nodes in cluster (yes/no) :",
+            if raw_input() == 'yes':
+                return 'PWROFF',Command
+            else:
+                return False,0
+          else:
+              if len(Command)!=1:
+                Command.remove('--yes')
+                return 'PWROFF',Command
+              else:
+                  return 'PWROFF','NULL'
+
 
 
 
@@ -70,7 +120,9 @@ def Parse(Command):
     'ifup':ParseEngines().IfUp,
     'lsproc':ParseEngines().LsProc,
     'kill':ParseEngines().Kill,
-    'killall':ParseEngines().KillAll}
+    'killall':ParseEngines().KillAll,
+    'reboot':ParseEngines().Reboot,
+    'poweroff':ParseEngines().PowerOff}
   
   
   if len(Command) == 0:
