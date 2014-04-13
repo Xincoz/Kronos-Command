@@ -97,13 +97,61 @@ class ParseEngines:
               else:
                   return 'PWROFF','NULL'
 
+    def Run(self,Command=False):
+       if Command!=False:
+        if len(Command) > 1:
+          print "Malformed Command  - Expecting : run <Coma separated IP/Domain list>"
+          return False,0
+       Code = raw_input("Command >>")
+       if Command == False:
+          return 'RUN',[Code]
+       else:
+          return 'RUN',[Command[0],Code]
+      
+    def ServeStart(self,Command=False):
+      if Command == False:
+          print "Malformed Command - Expecting : start/stop/restart <Service Name> <Coma separated IP/Domain list>"
+          return False,0
+      if len(Command) > 3:
+          print "Malformed Command - Expecting : start/stop/restart <Service Name> <Coma separated IP/Domain list>"
+          return False,0
+      if len(Command) == 1:
+          return 'SERV',['STASERV',Command[0]]
+      else:
+          return 'SERV',['STASERV',Command[0],Command[1]]
+
+
+    def ServeStop(self,Command=False):
+      if Command == False:
+          print "Malformed Command - Expecting : start/stop/restart <Service Name> <Coma separated IP/Domain list>"
+          return False,0
+      if len(Command) > 3:
+          print "Malformed Command - Expecting : start/stop/restart <Service Name> <Coma separated IP/Domain list>"
+          return False,0
+      if len(Command) == 1:
+          return 'SERV',['STOSERV',Command[0]]
+      else:
+          return 'SERV',['STOSERV',Command[0],Command[1]]
+
+
+    def ServeRestart(self,Command=False):
+      if Command == False:
+          print "Malformed Command - Expecting : start/stop/restart <Service Name> <Coma separated IP/Domain list>"
+          return False,0
+      if len(Command) > 3:
+          print "Malformed Command - Expecting : start/stop/restart <Service Name> <Coma separated IP/Domain list>"
+          return False,0
+      if len(Command) == 1:
+          return 'SERV',['RESSERV',Command[0]]
+      else:
+          return 'SERV',['RESSERV',Command[0],Command[1]]
 
 
 
 class Format:
   def FormatThis(self,Text):
-    Text = ' '.join(Text.lower().split()).split(' ')
-    print Text
+    Text = ' '.join(Text.split()).split(' ')
+    Text[0] = Text[0].lower()
     return Text
 
   def HasSpecial(self,Text):
@@ -122,8 +170,11 @@ def Parse(Command):
     'kill':ParseEngines().Kill,
     'killall':ParseEngines().KillAll,
     'reboot':ParseEngines().Reboot,
-    'poweroff':ParseEngines().PowerOff}
-  
+    'poweroff':ParseEngines().PowerOff,
+    'run':ParseEngines().Run,
+    'start':ParseEngines().ServeStart, 
+    'stop':ParseEngines().ServeStop,
+    'restart':ParseEngines().ServeRestart}
   
   if len(Command) == 0:
       return False,0

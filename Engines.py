@@ -5,6 +5,122 @@ from colorama import Fore, Back, Style
 import time
 
 
+def Service(Commands):
+  Nodes = Tools.Nodes().GetList()
+  Net = Tools.Network()
+  print Commands
+  if Commands[0] == 'STASERV':
+      print "Starting " + Commands[1],
+  if Commands[0] == 'STOSERV':
+      print "Stopping " + Commands[1],
+  if Commands[0] == 'RESSERV':
+      print "Restarting " + Commands[1],
+  if len(Commands) == 2:
+    print " on " + str(len(Nodes)) + " nodes."
+    for each in Nodes:
+      Kon = Net.Ping((each,Nodes[each]),True)
+      if Kon != False:
+         if not Kon.Send(Nodes[each]+ " " + Commands[0] + " " + Commands[1]):
+             print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
+             continue
+         Response = Kon.Recieve()
+         Kon.Close()
+         del Kon
+         if Response == "BAD COMMAND":
+             print "REMOTE HOST: " + each + Fore.RED + " - BAD COMMAND" + Fore.RESET
+             continue
+         if Response == "BAD SECRET":
+             print "REMOTE HOST: " + each + Fore.RED + " - BAD SECRET" + Fore.RESET
+             continuei
+
+         if Response == "Executed":
+            Color = Fore.GREEN
+         else:
+            Color = Fore.RED
+
+         print "REMOTE HOST: " + each + Color + " " + Response + Fore.RESET
+  else:
+      Hosts = Commands[2].split(',')
+      for each in Hosts:
+          if each not in Nodes:
+              print "REMOTE HOST: " + each + Fore.RED + " No such node" + Fore.RESET
+              continue
+          
+          Kon = Net.Ping((each,Nodes[each]),True)
+          if Kon != False:
+            if not Kon.Send(Nodes[each]+ " " + Commands[0] + " " + Commands[1]):
+                print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
+                continue
+            Response = Kon.Recieve()
+            Kon.Close()
+            del Kon
+            if Response == "BAD COMMAND":
+              print "REMOTE HOST: " + each + Fore.RED + " - BAD COMMAND" + Fore.RESET
+              continue
+            if Response == "BAD SECRET":
+                 print "REMOTE HOST: " + each + Fore.RED + " - BAD SECRET" + Fore.RESET
+                 continue
+            if Response == "Executed":
+              Color = Fore.GREEN
+            else:
+              Color = Fore.RED
+
+            print "REMOTE HOST: " + each + Color + " " + Response + Fore.RESET
+
+      
+
+
+def Run(Commands):
+  Nodes = Tools.Nodes().GetList()
+  Net = Tools.Network()
+  if len(Commands) == 1:
+      print "Running command on " + str(len(Nodes)) + " nodes."
+      for each in Nodes:
+          Kon = Net.Ping((each,Nodes[each]),True)
+          if Kon != False:
+            if not Kon.Send(Nodes[each] + "  EXECUT"):
+                print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
+                continue
+            Response = Kon.Recieve()
+            print Response
+            if Response == "BAD COMMAND":
+                  print "REMOTE HOST: " + each + Fore.RED + " - BAD COMMAND" + Fore.RESET
+                  continue
+            else:
+                  if not Kon.Send(Commands[0]):
+                    print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
+                    continue
+                  Response = Kon.Recieve()
+                  Kon.Close()
+                  del Kon
+                  print "REMOTE HOST: " + each + Fore.GREEN + " " + Response + Fore.RESET
+
+  else:
+      Hosts = Commands[0].split(',')
+      for each in Hosts:
+          if each not in Nodes:
+              print "REMOTE HOST: " + each + Fore.RED + "- No such node." + Fore.RESET
+              continue
+          Kon = Net.Ping((each,Nodes[each]),True)
+          if Kon != False:
+            if not Kon.Send(Nodes[each] + "  EXECUT"):
+                print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
+                continue
+            Response = Kon.Recieve()
+            print Response
+            if Response == "BAD COMMAND":
+                  print "REMOTE HOST: " + each + Fore.RED + " - BAD COMMAND" + Fore.RESET
+                  continue
+            else:
+                  if not Kon.Send(Commands[1]):
+                    print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
+                    continue
+                  Response = Kon.Recieve()
+                  Kon.Close()
+                  del Kon
+                  print "REMOTE HOST: " + each + Fore.GREEN + " " + Response + Fore.RESET
+
+
 def ReBoot(Hosts):
  Nodes = Tools.Nodes().GetList()
  Net = Tools.Network()

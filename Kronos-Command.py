@@ -14,8 +14,9 @@ LINKS = {
     'KILL':Engines.Kill,
     'KILLALL':Engines.KillAll,
     'REBOOT':Engines.ReBoot,
-    'PWROFF':Engines.PowerOff}
-
+    'PWROFF':Engines.PowerOff,
+    'RUN':Engines.Run,
+    'SERV':Engines.Service,}
 
 
 def Helper():
@@ -30,7 +31,10 @@ def Helper():
   print "killall  | Kill all processes by name on  nodes        | 'killall <Process Name> *<Coma separated IP/Domain>'"
   print "reboot   | Reboot all or few of the nodes              | 'reboot  *<Coma separated IP/Domain list>'  (add --yes to avoid prompt)"
   print "poweroff | Shutdown all or few of the nodes            | 'poweroff *<Coma separated IP/Domain list>' (add --yes to avoid prompt)"
-  
+  print "run      | Run a shell command in the node             | 'run  *<Coma separated IP/Domain list>"
+  print "start    | Start a service                             | 'start <Service Name> *<Coma separated IP/Domain list>"
+  print "stop     | Stop a service                              | 'stop <Service Name>  *<Coma separated IP/Domain list>"
+  print "restart  | Restart a service                           | 'restart  <Service Name> *<Coma separated IP/Domain list>"
   print "exit     | Exit from console                           | 'exit'"
   print Fore.GREEN + "Note: Parameters marked * are optional" + Fore.RESET
   print Fore.RED + "Warning! 'poweroff' command do not have a reverse option available, you will need to start the nodes back manually" + Fore.RESET

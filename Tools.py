@@ -15,7 +15,6 @@ class Nodes:
              line = line.split('|')
              line[1] = line[1].replace('\n','')
              Nodelist.update({line[0]:line[1]})
-         print Nodelist
          NodeFile.close()
          return Nodelist
 
