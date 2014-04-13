@@ -16,7 +16,10 @@ LINKS = {
     'REBOOT':Engines.ReBoot,
     'PWROFF':Engines.PowerOff,
     'RUN':Engines.Run,
-    'SERV':Engines.Service,}
+    'SERV':Engines.Service,
+    'LSNODES':Engines.ListNodes,
+    'STATUS':Engines.GetStatus,
+    'SETDNS':Engines.SetDNS}
 
 
 def Helper():
@@ -25,7 +28,10 @@ def Helper():
   print "-----------------------------------------------------------------------------------------------------------------"
   print "help     | Print this help message                     | 'help'"
   print "addnode  | Add new node to databse                     | 'addnode <IP / Domain> <Node Secret>'"
+  print "lsnodes  | List all nodes                              | 'lsnodes'"
   print "ifup     | Check if node/nodes are up by ping          | 'ifup  *<IP/Domain/Coma separated Domain or IP List>'"
+  print "status   | Get machine status data of the node         | 'status *<Coma separated IP/Domain list>'"
+  print "setdns   | Set the DNS server for the node             | 'setdns <Coma separated DNS server list> *<coma separated IP/Domain list>'"
   print "lsproc   | List Name and PID of all processes running  | 'lsproc *<Coma separater IP/Domain list>'"
   print "kill     | Kill a process by it's PID on a given host  | 'kill <PID> <IP/Domain of host>'"
   print "killall  | Kill all processes by name on  nodes        | 'killall <Process Name> *<Coma separated IP/Domain>'"

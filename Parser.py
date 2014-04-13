@@ -147,6 +147,28 @@ class ParseEngines:
           return 'SERV',['RESSERV',Command[0],Command[1]]
 
 
+    def ListNodes(self,Command=False):
+        return "LSNODES","NULL"
+
+    def GetStatus(self,Command=False):
+      if Command == False:
+          return "STATUS","NULL"
+      if len(Command)>1:
+          print "Malformed Command - Expecting : status *<Comaseparated IP/Domain list>"
+          return False,0
+      return "STATUS",Command
+
+
+    def SetDNS(self,Command=False):
+      if Command == False:
+          print "Malformed Command - Expecting : setdns <Comaseparated DNS server list> *<somaseparated IP/Domain list>"
+          return False,0
+      if len(Command) > 2:
+          print "Malformed Command - Expecting : setdns <Comaseparated DNS server list> *<somaseparated IP/Domain list>"
+          return False,0
+
+      return "SETDNS",Command
+
 
 class Format:
   def FormatThis(self,Text):
@@ -174,7 +196,10 @@ def Parse(Command):
     'run':ParseEngines().Run,
     'start':ParseEngines().ServeStart, 
     'stop':ParseEngines().ServeStop,
-    'restart':ParseEngines().ServeRestart}
+    'restart':ParseEngines().ServeRestart,
+    'lsnodes':ParseEngines().ListNodes,
+    'status':ParseEngines().GetStatus,
+    'setdns':ParseEngines().SetDNS}
   
   if len(Command) == 0:
       return False,0

@@ -3,6 +3,112 @@ from colorama import init
 init()
 from colorama import Fore, Back, Style
 import time
+import os
+
+
+def GetStatus(Commands):
+  Nodes = Tools.Nodes().GetList()
+  Net = Tools.Network()
+  print "Fetching status of " + str(len(Nodes)) + " nodes."
+  if Commands == "NULL":
+      for each in Nodes:
+        Kon = Net.Ping((each,Nodes[each]),True)
+        if Kon != False:
+          if not Kon.Send(Nodes[each] + " GETSTAT"):
+             print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
+             continue
+          Response = Kon.Recieve()
+          Kon.Close()
+          del Kon
+          if Response == "BAD COMMAND":
+              print "REMOTE HOST: " + each + Fore.RED + " - BAD COMMAND" + Fore.RESET
+              continue
+          print "================= HOST:" + each + " ==============="
+          print Response
+  else:
+      Hosts = Commands[0].split(',')
+      print "Fetchig status of " + str(len(Hosts)) + " nodes."
+      for each in Hosts:
+          if not each in Nodes:
+              print "REMOTE HOST: " + each + Fore.RED + " - No such node" + Fore.RESET
+              continue
+          Kon = Net.Ping((each,Nodes[each]),True)
+          if Kon != False:
+            if not Kon.Send(Nodes[each]+ " GETSTAT"):
+               print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
+               continue
+            Response = Kon.Recieve()
+            Kon.Close()
+            del Kon
+            if Response == "BAD COMMAND":
+              print "REMOTE HOST: " + each + Fore.RED + " - BAD COMMAND" + Fore.RESET
+              continue
+            print "================= HOST:" + each + " ==============="
+            print Response
+
+
+
+
+def ListNodes(Commands):
+  if not os.path.isfile('Nodes.Kronos'):
+    print "No nodes found"
+    return False
+  else:
+      Nodes = Tools.Nodes().GetList()
+      if len(Nodes) == 0:
+        print "No nodes found"
+        return False
+      for each in Nodes:
+          print each
+      return True
+
+def SetDNS(Commands):
+  Nodes = Tools.Nodes().GetList()
+  Net = Tools.Network()
+  if len(Commands) == 1:
+    for each in Nodes:
+        Kon = Net.Ping((each,Nodes[each]),True)
+        if Kon != False:
+          if not Kon.Send(Nodes[each] + " SETDNS " + Commands[0]):
+             print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
+             continue
+          Response = Kon.Recieve()
+          Kon.Close()
+          del Kon
+          if Response == "BAD COMMAND":
+              print Response
+
+              print "REMOTE HOST: " + each + Fore.RED + " - BAD COMMAND" + Fore.RESET
+              continue
+          if Response == "Done":
+              Color = Fore.GREEN
+          else:
+              Color = Fore.RED
+          print "REMOTE HOST: " + each + Color + " " + Response + Fore.RESET
+  else:
+      Hosts = Commands[1].split(',')
+      for each in Hosts:
+          if each not in Nodes:
+              print "REMOTE HOST: " + each + Fore.RED + " - No such node" + Fore.RESET
+              continue
+          Kon = Net.Ping((each,Nodes[each]),True)
+          if Kon != False:
+            if not Kon.Send(Nodes[each] + " SETDNS " + Commands[0]):
+              print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
+              continue
+          Response = Kon.Recieve()
+          Kon.Close()
+          del Kon
+          if Response == "BAD COMMAND":
+              print Response
+
+              print "REMOTE HOST: " + each + Fore.RED + " - BAD COMMAND" + Fore.RESET
+              continue
+          if Response == "Done":
+              Color = Fore.GREEN
+          else:
+              Color = Fore.RED
+          print "REMOTE HOST: " + each + Color + " " + Response + Fore.RESET
 
 
 def Service(Commands):
