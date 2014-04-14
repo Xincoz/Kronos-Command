@@ -1,10 +1,31 @@
+# -*- coding: utf-8 -*-
+#Kronos - 0.1 [Abstract Anion] - Alpha
+#Copyright (C) 2014 Blaise M Crowly  - All rights reserved
+#Created at Xincoz [xincoz.com]
+#GPL v3
+
+"""This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.)"""
+
+"""This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details."""
+
+
+
+#Import necessary modules
 import ping, socket
 from colorama import init
 init()
 from colorama import Fore, Back, Style
 import os
 
+#Class to handle few operations on nodes list
 class Nodes:
+#Load a list of all nodes in the Nodes.Kronos file
   def GetList(self):
     if not os.path.isfile('Nodes.Kronos'):
         return {}
@@ -17,7 +38,7 @@ class Nodes:
              Nodelist.update({line[0]:line[1]})
          NodeFile.close()
          return Nodelist
-
+#Add a node to the Nodes.Kronos file
   def NodeAdd(self,Remote):
     try:
       NodesFile = open('Nodes.Kronos','a')
@@ -33,7 +54,7 @@ class Nodes:
 
 
 
-
+#Connection class to handle connection with the nodes
 class Connection:
   Kon = ""
   SSLx = ""
@@ -75,8 +96,9 @@ class Connection:
 
 
 
-
+#Network class with few network operations
 class Network:
+#chekc if a string represents an IP
   def IsIP(self,Remote):
     try:
       socket.inet_aton(addr)
@@ -85,9 +107,11 @@ class Network:
       return False
 
 
-
+#Ping operation checks if the a host is up using the Kronos PING request
 
   def Ping(self,Remote,AMODE = False):
+#if AMODE is true the function will return the Connection object it creates instead of destroyit
+#it will also abstain from printing the status if the host is up
         if not self.IsIP(Remote[0]):
             try:
               Ip = repr(socket.gethostbyname(Remote[0]))

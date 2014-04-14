@@ -1,3 +1,35 @@
+
+
+# -*- coding: utf-8 -*-
+#Kronos - 0.1 [Abstract Anion] - Alpha
+#Copyright (C) 2014 Blaise M Crowly  - All rights reserved
+#Created at Xincoz [xincoz.com]
+#GPL v3
+
+"""This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.)"""
+
+"""This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details."""
+
+
+##########################################################################
+#  This file contains the functions that execute the required operations #
+#  based on the input fromt he main program.                             #
+#                                                                        #
+#--------------------------IMPORTANT-------------------------------------#
+#                                                                        #
+# May find repeating operations and outputs that could be put into a     #
+# functions and called at need but this has not been done to allow better#
+# flexibility if more actions are decided to be added to independent     #
+#                               functions                                #
+##########################################################################
+
+#Importing necessary modules
 import Tools
 from colorama import init
 init()
@@ -6,12 +38,55 @@ import time
 import os
 
 
+#Change secret function [ Recieves nodename and new secret]
+def ChSecret(Commands):
+  #Get list of nodes
+  Nodes = Tools.Nodes().GetList()
+#if given host name is not in the Nodes.Kronos file
+  if Commands[0] not in Nodes:
+      print "No such node"
+      return False
+  else:
+        #update the dictionary and then write it into Nodes.Kronos
+        Nodes.update({Commands[0]:Commands[1]})
+        File = open('Nodes.Kronos','w')
+        for each in Nodes:
+          File.write(each + '|' + Nodes[each] + '\n')
+        File.close()
+        print "Done"
+
+
+#Remove a node [ Recieves nodename]
+def ChSecret(Commands):
+  #Get list of nodes
+  Nodes = Tools.Nodes().GetList()
+#if given host name is not in the Nodes.Kronos file
+  if Commands[0] not in Nodes:
+      print "No such node"
+      return False
+  else:
+        #update the dictionary and then write it into Nodes.Kronos
+        Nodes.pop(Commands[0])
+        File = open('Nodes.Kronos','w')
+        for each in Nodes:
+          File.write(each + '|' + Nodes[each] + '\n')
+        File.close()
+        print "Done"
+
+
+
+
+
+#Get the machine status of the hosts [ Recieves Nothing, or the list of host]
 def GetStatus(Commands):
+  #load list of nodes
   Nodes = Tools.Nodes().GetList()
   Net = Tools.Network()
   print "Fetching status of " + str(len(Nodes)) + " nodes."
+  #if no host list is passed get status of all nodes ind Nodes.Kronos
   if Commands == "NULL":
       for each in Nodes:
+        #Get a object for communication after checking if the node is up
         Kon = Net.Ping((each,Nodes[each]),True)
         if Kon != False:
           if not Kon.Send(Nodes[each] + " GETSTAT"):
@@ -26,12 +101,14 @@ def GetStatus(Commands):
           print "================= HOST:" + each + " ==============="
           print Response
   else:
+  #If host list is provided get status of the given hosts
       Hosts = Commands[0].split(',')
       print "Fetchig status of " + str(len(Hosts)) + " nodes."
       for each in Hosts:
           if not each in Nodes:
               print "REMOTE HOST: " + each + Fore.RED + " - No such node" + Fore.RESET
               continue
+          #Get a object to communicate after checking if the node is up
           Kon = Net.Ping((each,Nodes[each]),True)
           if Kon != False:
             if not Kon.Send(Nodes[each]+ " GETSTAT"):
@@ -48,7 +125,7 @@ def GetStatus(Commands):
 
 
 
-
+#Print the list of nodes in the Nodes.Kronos file
 def ListNodes(Commands):
   if not os.path.isfile('Nodes.Kronos'):
     print "No nodes found"
@@ -62,10 +139,13 @@ def ListNodes(Commands):
           print each
       return True
 
+#Send the SETDNS request to the hosts [ Recieves DNS list and Hosts name]
 def SetDNS(Commands):
+  #Load list of nodes
   Nodes = Tools.Nodes().GetList()
   Net = Tools.Network()
   if len(Commands) == 1:
+#If no host list is given all nodes are used
     for each in Nodes:
         Kon = Net.Ping((each,Nodes[each]),True)
         if Kon != False:
@@ -86,6 +166,7 @@ def SetDNS(Commands):
               Color = Fore.RED
           print "REMOTE HOST: " + each + Color + " " + Response + Fore.RESET
   else:
+      #If host list is provided use it
       Hosts = Commands[1].split(',')
       for each in Hosts:
           if each not in Nodes:
@@ -110,7 +191,7 @@ def SetDNS(Commands):
               Color = Fore.RED
           print "REMOTE HOST: " + each + Color + " " + Response + Fore.RESET
 
-
+#Start/stop/restart a service
 def Service(Commands):
   Nodes = Tools.Nodes().GetList()
   Net = Tools.Network()
@@ -175,7 +256,7 @@ def Service(Commands):
 
       
 
-
+#Run a command on the server
 def Run(Commands):
   Nodes = Tools.Nodes().GetList()
   Net = Tools.Network()
@@ -226,7 +307,7 @@ def Run(Commands):
                   del Kon
                   print "REMOTE HOST: " + each + Fore.GREEN + " " + Response + Fore.RESET
 
-
+#Rebooot the hosts
 def ReBoot(Hosts):
  Nodes = Tools.Nodes().GetList()
  Net = Tools.Network()
@@ -266,7 +347,7 @@ def ReBoot(Hosts):
 
 
 
-
+#Poweroff the hosts
 def PowerOff(Hosts):
  Nodes = Tools.Nodes().GetList()
  Net = Tools.Network()
@@ -308,7 +389,7 @@ def PowerOff(Hosts):
 
 
 
-
+#Add a new node to Nodes.Kronos
 def AddNode(Key):
   Key = (Key[0].replace("'",''),Key[1])
   Net = Tools.Network()
@@ -321,7 +402,7 @@ def AddNode(Key):
   else:
       return False
 
-
+#List processes on hosts
 def LsProc(Hosts):
   Nodes = Tools.Nodes().GetList()
   Net = Tools.Network()
@@ -367,7 +448,7 @@ def LsProc(Hosts):
           else:
               print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
               return False
-
+#Kill a process on host
 def Kill(Commands):
   Nodes = Tools.Nodes().GetList()
   Net = Tools.Network()
@@ -400,6 +481,7 @@ def Kill(Commands):
         print "REMOTE HOST: " + Commands[1] + Fore.RED + " Failed" + Fore.RESET
         return False
 
+#Kill all instances of a process on a host
 def KillAll(Commands):
   Nodes = Tools.Nodes().GetList()
   Net = Tools.Network()
@@ -460,7 +542,7 @@ def KillAll(Commands):
       return True
 
 
-
+#Check if a host is up
 def IfUp(Hosts):
   Nodes = Tools.Nodes().GetList()
   Net = Tools.Network()
