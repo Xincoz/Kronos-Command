@@ -145,17 +145,42 @@ class ParseEngines:
                   return 'PWROFF','NULL'
 
 
-    #Run Command - CURRENTLY WONT WORK FROM COMMAND LINE DIRECTLY NEED MODIFICATION
+    #Run Command - Must check and return host names if provided and the proper string command
     def Run(self,Command=False):
-       if Command!=False:
-        if len(Command) > 1:
-          print "Malformed Command  - Expecting : run <Coma separated IP/Domain list>"
+       if Command==False:
+          print "Malformed Command  - Expecting : run *<Coma separated IP/Domain list> -c <Command>"
           return False,0
-       Code = raw_input("Command >>")
-       if Command == False:
-          return 'RUN',[Code]
+       if Command[0]=='-c':
+            if len(Command) <= 1:
+               print "Malforme Command - Expecting : run *<Coma separated IP/Domain list> -c <Command>"
+               return False,0
+            #If no hosts list is provided
+            Arg = ""
+            #Concatinate the entire string after the -c flag separated by ' '
+            for each in Command[1:]:
+                Arg = Arg + " " + each
+            #Return RUN flag and the Command 
+            return "RUN",[Arg]
        else:
-          return 'RUN',[Command[0],Code]
+           if len(Command) > 1 and  Command [1] == '-c':
+            if len(Command) <= 2:
+               print "Malforme Command - Expecting : run *<Coma separated IP/Domain list> -c <Command>"
+               return False,0
+             #If hosts list is provided
+            Arg = ""
+            #Concatinate the entire string after the -c flag separated by ' '
+            for each in Command[2:]:
+                Arg = Arg + " " + each
+            #Return RUN flag , host list and the Command 
+            return "RUN",[Command[0],Arg]
+
+           else:
+              print "Malformed Command  - Expecting : run *<Coma separated IP/Domain list> -c <Command>"
+              return False,0
+    
+    
+    
+    
     #Parse the start command that starts a service
     def ServeStart(self,Command=False):
       #Must have service name
@@ -245,13 +270,24 @@ class ParseEngines:
     def RmNode(self,Command=False):
       #Must have the nodename
       if Command == False:
-          print "Malformed Command - Expecting : setdns <Comaseparated DNS server list> *<somaseparated IP/Domain list>"
+          print "Malformed Command - Expecting : setdns <Comaseparated DNS server list> *<Comaseparated IP/Domain list>"
           return False,0
       #Must have the nodename only
       if len(Command) != 1:
-          print "Malformed Command - Expecting : setdns <Comaseparated DNS server list> *<somaseparated IP/Domain list>"
+          print "Malformed Command - Expecting : setdns <Comaseparated DNS server list> *<Comaseparated IP/Domain list>"
           return False,0
       return 'CHSECRET',Command
+
+    #Parses the running comand that checks if a said process is running
+    def IsRunning(self,Command=False):
+      #Must have name of the process
+      if Command == False:
+          print "Malformed Command - Expecting : running <Process Name> *<Coma separated IP/Domain list>"
+          return False,0
+      if len(Command) > 2:
+          print "Malformed Command - Expecting : running <Process Name> *<Coma separated IP/Domain list>"
+          return False,0
+      return 'ISRUNING',Command
 
 
 #Class to format the incoming list and split 
@@ -282,8 +318,10 @@ def Parse(Command):
     'status':ParseEngines().GetStatus,
     'setdns':ParseEngines().SetDNS,
     'chsecret':ParseEngines().ChSecret,
-    'rmnode':ParseEngine().RmNode}
-  
+    'rmnode':ParseEngines().RmNode,
+    'running':ParseEngines().IsRunning}
+
+
 #If no command is given just exit
   if len(Command) == 0:
       return False,0

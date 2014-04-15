@@ -38,6 +38,58 @@ import time
 import os
 
 
+#Check if a process with a certain name is running on the host
+def IsRunning(Commands):
+  #Get list of nodes
+  Nodes = Tools.Nodes().GetList()
+  Net = Tools.Network()
+#If no hosts list is provided do for every known node
+  if len(Commands) == 1:
+      for each in Nodes:
+        Kon = Net.Ping((each,Nodes[each]),True)
+        if Kon != False:
+          if not Kon.Send(Nodes[each] + " ISRUN " + Commands[0]):
+             print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
+             continue
+          Response = Kon.Recieve()
+          Kon.Close()
+          del Kon
+          if Response == "BAD COMMAND":
+              print "REMOTE HOST: " + each + Fore.RED + " - BAD COMMAND" + Fore.RESET
+              continue
+          if(Response=='Not Running'):
+              Color = Fore.RED
+          else:
+              Color = Fore.GREEN
+          print "REMOTE HOST: " + each + Color  + "  " + Response + Fore.RESET
+
+  else:
+  #If host list is provided get status of the given hosts
+      Hosts = Commands[0].split(',')
+      print "Fetchig status of " + str(len(Hosts)) + " nodes."
+      for each in Hosts:
+          if not each in Nodes:
+              print "REMOTE HOST: " + each + Fore.RED + " - No such node" + Fore.RESET
+              continue
+          #Get a object to communicate after checking if the node is up
+          Kon = Net.Ping((each,Nodes[each]),True)
+          if Kon != False:
+            if not Kon.Send(Nodes[each] + " ISRUN " + Commands[0]):
+               print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
+               continue
+            Response = Kon.Recieve()
+            Kon.Close()
+            del Kon
+            if Response == "BAD COMMAND":
+              print "REMOTE HOST: " + each + Fore.RED + " - BAD COMMAND" + Fore.RESET
+              continue
+            if(Response=='Not Running'):
+              Color = Fore.RED
+            else:
+              Color = Fore.GREEN
+            print "REMOTE HOST: " + each + Color  + "  " + Response + Fore.RESET
+
+
 #Change secret function [ Recieves nodename and new secret]
 def ChSecret(Commands):
   #Get list of nodes
@@ -57,7 +109,7 @@ def ChSecret(Commands):
 
 
 #Remove a node [ Recieves nodename]
-def ChSecret(Commands):
+def RmNode(Commands):
   #Get list of nodes
   Nodes = Tools.Nodes().GetList()
 #if given host name is not in the Nodes.Kronos file
@@ -269,7 +321,6 @@ def Run(Commands):
                 print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
                 continue
             Response = Kon.Recieve()
-            print Response
             if Response == "BAD COMMAND":
                   print "REMOTE HOST: " + each + Fore.RED + " - BAD COMMAND" + Fore.RESET
                   continue
@@ -280,7 +331,11 @@ def Run(Commands):
                   Response = Kon.Recieve()
                   Kon.Close()
                   del Kon
-                  print "REMOTE HOST: " + each + Fore.GREEN + " " + Response + Fore.RESET
+                  if Response == 'Failed':
+                      Color = Fore.RED
+                  else:
+                      Color = Fore.GREEN
+                  print "REMOTE HOST: " + each + Color + " " + Response + Fore.RESET
 
   else:
       Hosts = Commands[0].split(',')
@@ -294,7 +349,6 @@ def Run(Commands):
                 print "REMOTE HOST: " + each + Fore.RED + " Failed" + Fore.RESET
                 continue
             Response = Kon.Recieve()
-            print Response
             if Response == "BAD COMMAND":
                   print "REMOTE HOST: " + each + Fore.RED + " - BAD COMMAND" + Fore.RESET
                   continue
@@ -305,7 +359,11 @@ def Run(Commands):
                   Response = Kon.Recieve()
                   Kon.Close()
                   del Kon
-                  print "REMOTE HOST: " + each + Fore.GREEN + " " + Response + Fore.RESET
+                  if Response == 'Failed':
+                      Color = Fore.RED
+                  else:
+                      Color = Fore.GREEN
+                  print "REMOTE HOST: " + each + Color + " " + Response + Fore.RESET
 
 #Rebooot the hosts
 def ReBoot(Hosts):

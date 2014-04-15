@@ -48,7 +48,9 @@ LINKS = {
     'STATUS':Engines.GetStatus,
     'SETDNS':Engines.SetDNS,
     'CHSECRET':Engines.ChSecret,
-    'RMNODE':Engines.RmNode}
+    'RMNODE':Engines.RmNode,
+    'ISRUNING':Engines.IsRunning,
+    }
 
 #Help message
 def Helper():
@@ -56,18 +58,20 @@ def Helper():
   print "Commands | Use                                         | Format "  
   print "-----------------------------------------------------------------------------------------------------------------"
   print "help     | Print this help message                     | 'help'"
-  print "addnode  | Add new node to databse                     | 'addnode <IP / Domain> <Node Secret>'"
+  print "addnode  | Add new node to database                    | 'addnode <IP / Domain> <Node Secret>'"
+  print "rmnode   | Remove a node from database                 | 'rmnode <IP/Domain>'"
   print "lsnodes  | List all nodes                              | 'lsnodes'"
   print "chsecret | Change secret of a node                     | 'chsecret <Node>  <New secret>'"
   print "ifup     | Check if node/nodes are up by ping          | 'ifup  *<IP/Domain/Coma separated Domain or IP List>'"
   print "status   | Get machine status data of the node         | 'status *<Coma separated IP/Domain list>'"
   print "setdns   | Set the DNS server for the node             | 'setdns <Coma separated DNS server list> *<coma separated IP/Domain list>'"
   print "lsproc   | List Name and PID of all processes running  | 'lsproc *<Coma separater IP/Domain list>'"
+  print "running  | Check if a process is running               | 'running <Process name> *<Coma separated IP / Domains>'"
   print "kill     | Kill a process by it's PID on a given host  | 'kill <PID> <IP/Domain of host>'"
   print "killall  | Kill all processes by name on  nodes        | 'killall <Process Name> *<Coma separated IP/Domain>'"
   print "reboot   | Reboot all or few of the nodes              | 'reboot  *<Coma separated IP/Domain list>'  (add --yes to avoid prompt)"
   print "poweroff | Shutdown all or few of the nodes            | 'poweroff *<Coma separated IP/Domain list>' (add --yes to avoid prompt)"
-  print "run      | Run a shell command in the node             | 'run  *<Coma separated IP/Domain list>"
+  print "run      | Run a shell command in the node             | 'run  *<Coma separated IP/Domain list> -c <Command>'"
   print "start    | Start a service                             | 'start <Service Name> *<Coma separated IP/Domain list>"
   print "stop     | Stop a service                              | 'stop <Service Name>  *<Coma separated IP/Domain list>"
   print "restart  | Restart a service                           | 'restart  <Service Name> *<Coma separated IP/Domain list>"
@@ -110,12 +114,15 @@ if __name__ == '__main__':
       Arguments = ""
       #Convert the arguments into a single long string
       for each in sys.argv[1:]:
+          #Replace any ' ' with '\ ' to keep integrity of input in case of run command containing
+          #strings with ' ' or paths with ' '
+          eachch .replace(' ','\ ')
           Arguments = Arguments + " " + each
       Arguments = Arguments.strip()
       #Print help message if 'help'
       if Arguments == 'help':
-          Helperi()
-          return 0
+          Helper()
+          exit()
       #Pass string for parsing
       State,Command = Parser.Parse(Arguments)
       try:
