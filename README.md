@@ -9,9 +9,19 @@ While the it is designed to be cross platform as of now it only support:
 
 Python 2.7
 
+INSTALLATION & TUTORIAL
+------------------------
+We have detailed installation instructions and tutorials at:
+<http://www.xincoz.com/Kronos/Kronos.html>
 
 
+To Do
+-------
+List of things are are hoping to do in the program.
 
+* Add console history 
+* Improve robustness
+* Make a API for python by combining and editing the Tools.py and Engines.py
 
 License
 ---------------
