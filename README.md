@@ -29,6 +29,8 @@ IRC: #KronosProject at freenode
 
 Mailing List: kronos@librelist.com 
 
+Kronos Manager : <https://github.com/Xincoz/Kronos>
+
 License
 ---------------
 The program is Free and Open Software (Free as in free speech) under the term of the GNU - General Public License v3.0
