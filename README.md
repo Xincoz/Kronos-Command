@@ -12,7 +12,7 @@ Python 2.7
 INSTALLATION & TUTORIAL
 ------------------------
 We have detailed installation instructions and tutorials at:
-<http://www.xincoz.com/Kronos/Kronos.html>
+<http://www.xincoz.com/Kronos/kronos.html>
 
 
 To Do
