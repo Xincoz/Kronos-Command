@@ -276,7 +276,7 @@ class ParseEngines:
       if len(Command) != 1:
           print "Malformed Command - Expecting : setdns <Comaseparated DNS server list> *<Comaseparated IP/Domain list>"
           return False,0
-      return 'CHSECRET',Command
+      return 'RMNODE',Command
 
     #Parses the running comand that checks if a said process is running
     def IsRunning(self,Command=False):

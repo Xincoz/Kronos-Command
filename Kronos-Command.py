@@ -116,7 +116,7 @@ if __name__ == '__main__':
       for each in sys.argv[1:]:
           #Replace any ' ' with '\ ' to keep integrity of input in case of run command containing
           #strings with ' ' or paths with ' '
-          eachch .replace(' ','\ ')
+          each.replace(' ','\ ')
           Arguments = Arguments + " " + each
       Arguments = Arguments.strip()
       #Print help message if 'help'

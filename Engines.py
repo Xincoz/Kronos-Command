@@ -134,9 +134,9 @@ def GetStatus(Commands):
   #load list of nodes
   Nodes = Tools.Nodes().GetList()
   Net = Tools.Network()
-  print "Fetching status of " + str(len(Nodes)) + " nodes."
   #if no host list is passed get status of all nodes ind Nodes.Kronos
   if Commands == "NULL":
+      print "Fetching status of " + str(len(Nodes)) + " nodes."
       for each in Nodes:
         #Get a object for communication after checking if the node is up
         Kon = Net.Ping((each,Nodes[each]),True)
@@ -247,7 +247,6 @@ def SetDNS(Commands):
 def Service(Commands):
   Nodes = Tools.Nodes().GetList()
   Net = Tools.Network()
-  print Commands
   if Commands[0] == 'STASERV':
       print "Starting " + Commands[1],
   if Commands[0] == 'STOSERV':

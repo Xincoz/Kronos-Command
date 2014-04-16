@@ -23,6 +23,12 @@ List of things are are hoping to do in the program.
 * Improve robustness
 * Make a API for python by combining and editing the Tools.py and Engines.py
 
+IRC & Mailing List
+------------------
+IRC: #KronosProject at freenode
+
+Mailing List: kronos@librelist.com 
+
 License
 ---------------
 The program is Free and Open Software (Free as in free speech) under the term of the GNU - General Public License v3.0
