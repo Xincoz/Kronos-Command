@@ -36,7 +36,7 @@ init()
 from colorama import Fore, Back, Style
 import time
 import os
-
+import subprocess
 
 #Check if a process with a certain name is running on the host
 def IsRunning(Commands):
@@ -330,11 +330,8 @@ def Run(Commands):
                   Response = Kon.Recieve()
                   Kon.Close()
                   del Kon
-                  if Response == 'Failed':
-                      Color = Fore.RED
-                  else:
-                      Color = Fore.GREEN
-                  print "REMOTE HOST: " + each + Color + " " + Response + Fore.RESET
+                  print  "============= HOST: " + each + " ============="
+                  print Response
 
   else:
       Hosts = Commands[0].split(',')
@@ -358,11 +355,9 @@ def Run(Commands):
                   Response = Kon.Recieve()
                   Kon.Close()
                   del Kon
-                  if Response == 'Failed':
-                      Color = Fore.RED
-                  else:
-                      Color = Fore.GREEN
-                  print "REMOTE HOST: " + each + Color + " " + Response + Fore.RESET
+                  print  "============= HOST: " + each + " ============="
+                  print Response
+
 
 #Rebooot the hosts
 def ReBoot(Hosts):
