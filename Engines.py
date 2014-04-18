@@ -270,13 +270,8 @@ def Service(Commands):
          if Response == "BAD SECRET":
              print "REMOTE HOST: " + each + Fore.RED + " - BAD SECRET" + Fore.RESET
              continuei
-
-         if Response == "Executed":
-            Color = Fore.GREEN
-         else:
-            Color = Fore.RED
-
-         print "REMOTE HOST: " + each + Color + " " + Response + Fore.RESET
+         print "============= HOST: " + each + " ============="
+         print Response
   else:
       Hosts = Commands[2].split(',')
       for each in Hosts:
@@ -298,13 +293,9 @@ def Service(Commands):
             if Response == "BAD SECRET":
                  print "REMOTE HOST: " + each + Fore.RED + " - BAD SECRET" + Fore.RESET
                  continue
-            if Response == "Executed":
-              Color = Fore.GREEN
-            else:
-              Color = Fore.RED
 
-            print "REMOTE HOST: " + each + Color + " " + Response + Fore.RESET
-
+            print "============= HOST: " + each + " ============="
+            print Response
       
 
 #Run a command on the server
