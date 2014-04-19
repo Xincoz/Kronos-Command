@@ -50,6 +50,7 @@ LINKS = {
     'CHSECRET':Engines.ChSecret,
     'RMNODE':Engines.RmNode,
     'ISRUNING':Engines.IsRunning,
+    'ADDDOC':Engines.AddDOC
     }
 
 #Help message
@@ -76,6 +77,9 @@ def Helper():
   print "stop     | Stop a service                              | 'stop <Service Name>  *<Coma separated IP/Domain list>"
   print "restart  | Restart a service                           | 'restart  <Service Name> *<Coma separated IP/Domain list>"
   print "exit     | Exit from console                           | 'exit'"
+  print "\n\n-------Cloud Services-------\n\n"
+  print "adddoc   | Add a Digital Ocean account                 | 'adddoc <Account Name> <Client ID> <API Key>'"
+  
   print Fore.GREEN + "Note: Parameters marked * are optional" + Fore.RESET
   print Fore.RED + "Warning! 'poweroff' command do not have a reverse option available, you will need to start the nodes back manually" + Fore.RESET
   print "\n"

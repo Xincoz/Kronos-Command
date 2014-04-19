@@ -289,6 +289,16 @@ class ParseEngines:
           return False,0
       return 'ISRUNING',Command
 
+    def AddDOC(self,Command=False):
+      #Arguments can't be empty must have ClientID and APIkey
+      if Command == False:
+          print "Malformed Command - Expecting : running <Process Name> *<Coma separated IP/Domain list>"
+          return False,0
+      if len(Command) != 3:
+          print "Malformed Command - Expecting : running <Process Name> *<Coma separated IP/Domain list>"
+          return False,0
+      return 'ADDDOC',Command
+
 
 #Class to format the incoming list and split 
 class Format:
@@ -319,7 +329,8 @@ def Parse(Command):
     'setdns':ParseEngines().SetDNS,
     'chsecret':ParseEngines().ChSecret,
     'rmnode':ParseEngines().RmNode,
-    'running':ParseEngines().IsRunning}
+    'running':ParseEngines().IsRunning,
+    'adddoc':ParseEngines().AddDOC}
 
 
 #If no command is given just exit

@@ -37,6 +37,16 @@ from colorama import Fore, Back, Style
 import time
 import os
 import subprocess
+import Cloud.Engine as CloudEngine
+
+
+#Add a Digital Ocean Account by accepting Client ID and API key
+#Will save it to the file Cloud/Digitalocean.Kronos
+def AddDOC(Commands):
+  return CloudEngine.AddDOC(Commands)
+
+
+
 
 #Check if a process with a certain name is running on the host
 def IsRunning(Commands):
