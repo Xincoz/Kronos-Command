@@ -3,6 +3,11 @@ Kronos Command
 
 Kronos command is part of the 'Kronos Project' which allows a administrator to monitor and manage multiple hosts/nodes in a cluster from a single terminal. It consist of a 'command' and 'manager'. Kronos Command is used to control all the nodes with Kronos Manager installed
 
+Release Noted
+-------------
+Refer the [Release Notes](Release.md) for critical release update on both Kronos and Kronos-Command
+
+
 Platform
 ------------
 While the it is designed to be cross platform as of now it only support:
