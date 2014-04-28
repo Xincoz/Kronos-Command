@@ -58,5 +58,7 @@ class DoClient:
       Request = "https://api.digitalocean.com/droplets/" + Id  + "/power_on/?client_id=" + self.CID + "&api_key=" + self.APIKEY
       Response = urllib2.urlopen(Request).read()
     except Exception,e:
-      return e
+      print e
     return json.loads(Response.strip())
+
+

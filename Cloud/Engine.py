@@ -30,19 +30,14 @@ import DoAPI  as DO
 
 def AddDOC(Commands):
 #If file already exist check if duplicate entry
-  if os.path.isfile('Digitalocean.Kronos'):
-      File = open('Digitalocean.Kronos','r')
-      Accounts = {}
-      for each in File:
-        each = each.strip().replace('\n').split('|')
-        Accounts.update({each[0]:each[1]})
-      File.close()
+  if os.path.isfile('Cloud/Digitalocean.Kronos'):
+      Accounts = GetDocAccounts()
       if Commands[0] in Accounts:
-          print "Account name already used"
+          print "Account name already in use"
           return False,0
       for each in Accounts:
           if Commands[1] in Accounts[each].split(':'):
-            print "Account with same client IS found : " + each
+            print "Account with same client ID found : " + each
             return False,0
   #Try making a request to validate the API credentials
   Cli = DO.makeclient(Commands[1],Commands[2])
@@ -53,7 +48,7 @@ def AddDOC(Commands):
   try:
     if Tmp['status'] == 'OK':
       del Cli
-      File = open('Digitalocean.Kronos','a')
+      File = open('Cloud/Digitalocean.Kronos','a')
       File.write(Commands[0] + '|' + Commands[1] + ':' + Commands[2])
       File.close()
     else:
@@ -63,3 +58,53 @@ def AddDOC(Commands):
     print "Failed to validate details"
     return False,0
 
+def GetDocAccounts():
+  Accounts = {}
+  if os.path.isfile('Cloud/Digitalocean.Kronos'):
+      File = open('Cloud/Digitalocean.Kronos','r')
+      for each in File:
+        each = each.strip().replace('\n','').split('|')
+        Accounts.update({each[0]:each[1]})
+      File.close()
+      return Accounts
+  else:
+      return Accounts
+
+def GetCloudNodes():
+  Accounts={}
+  if os.path.isfile('Cloud/Digitalocean.Kronos'):
+    return Accounts
+  else:
+    File = open('Cloud/CloudNodes.Kronos','r')
+    for each in File:
+        if 'DOC@' in each:
+            each = each.replace('DOC@','').replace('\n','').split('|')
+            Accounts.update({each[0]:each[1]})
+    File.close()
+    return Accounts
+
+def AddDocNode(Vals):
+  File = open('Cloud/CloudNodes.Kronos','a')
+  File.write('DOC@' + Vals[0] + '|' + Vals[1] + ':' + Vals[2] + '\n')
+  File.close()
+
+def PoweOn(Vals):
+  if not os.path.isfile('Cloud/CloudNodes.Kronos'):
+    print "No known cloud nodes"
+    return False
+  DOCNodes = GetCloudNodes()
+  if Vals in  DOCNodes:
+    Vals = DOCNodes[Vals].split(':')
+    Cloud = GetDocAccounts()
+    if Vals[0] not in Cloud:
+      print "DOC Account Missing"
+      return False
+    else:
+      APICred = Cloud[Vals[0]].split(':')
+      Cli = DO.makeclient(APICred[0],APICred[1])
+      Response = Cli.poweron(Vals[1])
+      if Response['status'] == 'OK':
+        print "Startup Initiated"
+  else:
+     print "Node is not listed as a Digital Ocean node"
+     return False
