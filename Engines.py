@@ -37,6 +37,23 @@ from colorama import Fore, Back, Style
 import time
 import os
 import subprocess
+import Cloud.Engine as CloudEngine
+
+
+
+def Poweron(Commands):
+   Hosts = Commands[0].split(',')
+   for each in Hosts:
+        CloudEngine.PowerOn(each)
+   return True
+
+#Add a Digital Ocean Account by accepting Client ID and API key
+#Will save it to the file Cloud/Digitalocean.Kronos
+def AddDOC(Commands):
+  return CloudEngine.AddDOC(Commands)
+
+
+
 
 #Check if a process with a certain name is running on the host
 def IsRunning(Commands):
@@ -434,12 +451,21 @@ def PowerOff(Hosts):
 
 #Add a new node to Nodes.Kronos
 def AddNode(Key):
-  Key = (Key[0].replace("'",''),Key[1])
+  #Check if the Node already exist
+  Key[0] = Key[0].replace("'",'')
   Net = Tools.Network()
   Nodes = Tools.Nodes().GetList()
   if Key[0] in Nodes:
       print "Node already exist."
       return False
+  if len(Key) == 5:
+      if Key[2] == '--doc':
+          Acc = CloudEngine.GetDocAccounts()
+          if Key[3] not in Acc:
+              print "No such Digital Ocean account found. Use 'adddoc' command to add it."
+              return False
+          #Pass The NodeName, DOC account and Node Id to the add function.
+          CloudEngine.AddDocNode([Key[0],Key[3],Key[4]])
   if Net.Ping(Key) !=  False:
       Tools.Nodes().NodeAdd(Key)
   else:
