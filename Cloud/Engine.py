@@ -72,7 +72,7 @@ def GetDocAccounts():
 
 def GetCloudNodes():
   Accounts={}
-  if os.path.isfile('Cloud/Digitalocean.Kronos'):
+  if not os.path.isfile('Cloud/CloudNodes.Kronos'):
     return Accounts
   else:
     File = open('Cloud/CloudNodes.Kronos','r')
@@ -88,7 +88,7 @@ def AddDocNode(Vals):
   File.write('DOC@' + Vals[0] + '|' + Vals[1] + ':' + Vals[2] + '\n')
   File.close()
 
-def PoweOn(Vals):
+def PowerOn(Vals):
   if not os.path.isfile('Cloud/CloudNodes.Kronos'):
     print "No known cloud nodes"
     return False

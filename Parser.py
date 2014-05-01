@@ -25,6 +25,15 @@ GNU General Public License for more details."""
 #ParseEngine class contains all the function that are induvidually designed to accept
 #the input string and process it as per the requirement of the specific command
 class ParseEngines:
+    #Handles the poweron command
+    def Poweron(self,Command="NULL"):
+        if Command == "NULL":
+            print "Malformed Command - Expecting : poweron <Coma separated node list>"
+            return False,0
+        if len(Command) != 1:
+            print "Malformed Command - Expecting : poweron <Coma separated node list>"
+            return False,0
+        return "POWERON",Command
 
     #Parse input for the killall command
     def KillAll(self,Command="NULL"):
@@ -38,10 +47,22 @@ class ParseEngines:
 
     #Parse input for an addnode command
     def AddNode(self,Command):
-     #Strictly must have only two factors, the name of node and secret
-     if len(Command) != 2:
-         print "Malformed Command - Expecting  : addnode <IP / Domain> <Node Secret>"
-         return False,0
+     #If --doc is enabled the input must have the DOC Account Name and Node ID
+     if '--doc' in Command:
+          if len(Command) != 5:
+            print "Malformed Command - Expecting  : addnode <IP / Domain> <Node Secret> *--doc <Account ID> <Node ID>"
+            return False,0
+          if  Command[2] != '--doc':
+            print "Malformed Command - Expecting  : addnode <IP / Domain> <Node Secret> *--doc <Account ID> <Node ID>"
+            return False,0
+          else:
+             return "ADDNODE",Command
+     else:
+     #if no --doc is enabled the input must have only node name and secret
+         if len(Command)!=2:
+          print "Malformed Command - Expecting  : addnode <IP / Domain> <Node Secret> *--doc <Account ID> <Node ID>"
+          return False,0
+     
      return "ADDNODE",Command
      
 
@@ -330,8 +351,8 @@ def Parse(Command):
     'chsecret':ParseEngines().ChSecret,
     'rmnode':ParseEngines().RmNode,
     'running':ParseEngines().IsRunning,
-    'adddoc':ParseEngines().AddDOC}
-
+    'adddoc':ParseEngines().AddDOC,
+    'poweron':ParseEngines().Poweron}
 
 #If no command is given just exit
   if len(Command) == 0:

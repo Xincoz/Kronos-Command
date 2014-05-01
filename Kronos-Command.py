@@ -50,7 +50,8 @@ LINKS = {
     'CHSECRET':Engines.ChSecret,
     'RMNODE':Engines.RmNode,
     'ISRUNING':Engines.IsRunning,
-    'ADDDOC':Engines.AddDOC
+    'ADDDOC':Engines.AddDOC,
+    'POWERON':Engines.Poweron
     }
 
 #Help message
@@ -59,7 +60,7 @@ def Helper():
   print "Commands | Use                                         | Format "  
   print "-----------------------------------------------------------------------------------------------------------------"
   print "help     | Print this help message                     | 'help'"
-  print "addnode  | Add new node to database                    | 'addnode <IP / Domain> <Node Secret>'"
+  print "addnode  | Add new node to database                    | 'addnode <IP / Domain> <Node Secret>' *--doc <Account name> <Node ID>"
   print "rmnode   | Remove a node from database                 | 'rmnode <IP/Domain>'"
   print "lsnodes  | List all nodes                              | 'lsnodes'"
   print "chsecret | Change secret of a node                     | 'chsecret <Node>  <New secret>'"
@@ -79,6 +80,7 @@ def Helper():
   print "exit     | Exit from console                           | 'exit'"
   print "\n\n-------Cloud Services-------\n\n"
   print "adddoc   | Add a Digital Ocean account                 | 'adddoc <Account Name> <Client ID> <API Key>'"
+  print "poweron  | Power on a Digital Ocean node               | 'poweron <Coma separated node list>'"
   
   print Fore.GREEN + "Note: Parameters marked * are optional" + Fore.RESET
   print Fore.RED + "Warning! 'poweroff' command do not have a reverse option available, you will need to start the nodes back manually" + Fore.RESET
